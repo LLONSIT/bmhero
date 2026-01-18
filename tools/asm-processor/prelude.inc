@@ -1,23 +1,16 @@
-# This file is used by modern gas.
-# Defines the expected assembly macros
+.set noat
+.set noreorder
+.set gp=64
 
-# Evaluate this file only once in case it's included more than once
-.ifndef _MACRO_INC_GUARD
-.internal _MACRO_INC_GUARD
-.set _MACRO_INC_GUARD, 1
-
-# A function symbol.
+# A function symbol (but some projects use it for everything).
 .macro glabel label, visibility=global
     .\visibility \label
-    .type \label, @function
     \label:
-        .ent \label
 .endm
 
 # The end of a function symbol.
 .macro endlabel label
     .size \label, . - \label
-    .end \label
 .endm
 
 # An alternative entry to a function.
@@ -25,27 +18,12 @@
     .\visibility \label
     .type \label, @function
     \label:
-        .aent \label
-.endm
-
-# A label referenced by an error handler table.
-.macro ehlabel label, visibility=global
-    .\visibility \label
-    \label:
-.endm
-
-
-# A label referenced by a jumptable.
-.macro jlabel label, visibility=global
-    .\visibility \label
-    \label:
 .endm
 
 
 # A data symbol.
 .macro dlabel label, visibility=global
     .\visibility \label
-    .type \label, @object
     \label:
 .endm
 
@@ -55,6 +33,12 @@
 .endm
 
 
+# A label referenced by a jumptable.
+.macro jlabel label, visibility=global
+    .\visibility \label
+    \label:
+.endm
+
 # Label to signal the symbol haven't been matched yet.
 .macro nonmatching label, size=1
     .global \label\().NON_MATCHING
@@ -63,42 +47,7 @@
     \label\().NON_MATCHING:
 .endm
 
-# COP0 register aliases
-
-.set Index,         $0
-.set Random,        $1
-.set EntryLo0,      $2
-.set EntryLo1,      $3
-.set Context,       $4
-.set PageMask,      $5
-.set Wired,         $6
-.set Reserved07,    $7
-.set BadVaddr,      $8
-.set Count,         $9
-.set EntryHi,       $10
-.set Compare,       $11
-.set Status,        $12
-.set Cause,         $13
-.set EPC,           $14
-.set PRevID,        $15
-.set Config,        $16
-.set LLAddr,        $17
-.set WatchLo,       $18
-.set WatchHi,       $19
-.set XContext,      $20
-.set Reserved21,    $21
-.set Reserved22,    $22
-.set Reserved23,    $23
-.set Reserved24,    $24
-.set Reserved25,    $25
-.set PErr,          $26
-.set CacheErr,      $27
-.set TagLo,         $28
-.set TagHi,         $29
-.set ErrorEPC,      $30
-.set Reserved31,    $31
-
-# Float register aliases
+# Float register aliases (o32 ABI, odd ones are rarely used)
 
 .set $fv0,          $f0
 .set $fv0f,         $f1
@@ -132,5 +81,3 @@
 .set $fs4f,         $f29
 .set $fs5,          $f30
 .set $fs5f,         $f31
-
-.endif

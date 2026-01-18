@@ -66,7 +66,7 @@ DECOMP_BMHERO := $(DECOMP_C_OBJS)
 DEP_FILES := $(O_FILES:.o=.d) $(DECOMP_C_OBJS:.o=.asmproc.d)
 
 SPLAT_YAML := splat.yaml
-SPLAT = $(PYTHON) tools/n64splat/split.py $(SPLAT_YAML)
+SPLAT = $(PYTHON) tools/splat/split.py $(SPLAT_YAML)
 
 ##################### Compiler Options #######################
 findcmd = $(shell type $(1) >/dev/null 2>/dev/null; echo $$?)
@@ -97,10 +97,10 @@ endif
 # game uses IDO 5.3
 CC = tools/ido_recomp/$(HOST_OS)/5.3/cc
 CC_OLD = tools/ido_recomp/$(HOST_OS)/5.3/cc
-ASMPROC = python3 tools/asmproc/build.py
+ASMPROC = python3 tools/asm-processor/build.py
 ASMPROC_FLAGS :=
 
-MIPS_VERSION := -mips1
+MIPS_VERSION := -mips1 -32
 
 OPTFLAGS := -g
 
